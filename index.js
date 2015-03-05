@@ -16,11 +16,6 @@ app.get('/', function(request, response) {
 
 app.use(express.static(__dirname + '/public'));
 
-// app.get('/weather', function(request, response) {
-//   console.log('went into weather');
-//   response.sendFile('./weather.html');
-// });
-
 app.get('/db', function(request, response) {
   pg.connect(process.env.DATABASE_URL, function(err, client, done) {
     client.query('SELECT * FROM test_table', function(err, result) {
