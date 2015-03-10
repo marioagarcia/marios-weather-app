@@ -4,7 +4,7 @@
 
 $( "#city-input" ).keyup(function() {
   var letters = $("#city-input").val();
-  var rest_url = "https://cities-rest-api.herokuapp.com/cities?q=" + letters;
+  var rest_url = "https://marios-weather-app.herokuapp.com/cities?q=" + letters;
   $.getJSON(rest_url, function(data) {
 
     var everything = "";
