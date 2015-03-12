@@ -4,3 +4,7 @@ body {
 .first-header {
   padding-top: 40px;
 }
+
+.float-right {
+    float: right;
+}

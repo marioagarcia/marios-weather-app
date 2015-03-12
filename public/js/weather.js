@@ -66,3 +66,11 @@ $("#city-btn").click(function(e) {
   e.preventDefault();
 
 });
+//
+//$('#comments').ready(function () {
+//    var url = ''
+//    $getJSON(url, function (comments) {
+//        var html;
+//
+//    })
+//})

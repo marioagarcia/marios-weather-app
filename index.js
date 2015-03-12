@@ -2,19 +2,53 @@ var express = require('express');
 var app = express();
 var cool = require('cool-ascii-faces');
 var pg = require('pg');
+var mongodb = require('mongodb');
 
 app.set('port', (process.env.PORT || 5000));
 app.use(express.static(__dirname + '/public'));
 
 app.get('/', function(request, response) {
-  var result = ''
-  var times = process.env.TIMES || 5
+  var result = '';
+  var times = process.env.TIMES || 5;
   for(i = 0; i < times; i++)
     result += cool() + '\n';
   response.send(result);
 });
 
-app.use(express.static(__dirname + '/public'));
+app.get('/comments', function(request, response) {
+    mongodb.MongoClient.connect(process.env.MONGOLAB_URI, function(err, db) {
+        if(err) throw err;
+        db.collection('comments', function (err, comments) {
+            if(err) throw err;
+            comments.find({}).toArray(function (err, all_comments) {
+                if(err) throw err;
+                all_comments.forEach(function (comment) {
+
+                    console.log('Got a comment from: ' + comment['name'] + ' saying: ' + comment['comment']);
+                })
+
+                response.send(all_comments);
+
+                db.close();
+            });
+        });
+    });
+});
+
+app.post('/comments', function(request, response) {
+    mongodb.MongoClient.connect(process.env.MONGOLAB_URI, function(err, db) {
+        if(err) throw err;
+        db.collection('comments', function (err, comments) {
+            if(err) throw err;
+            comments.insert(response, function (err, result) {
+                if(err) throw err;
+                console.log(result);
+                response.send(200);
+            });
+        });
+        db.close();
+    });
+});
 
 app.get('/db', function(request, response) {
   pg.connect(process.env.DATABASE_URL, function(err, client, done) {
