@@ -66,11 +66,15 @@ $("#city-btn").click(function(e) {
   e.preventDefault();
 
 });
-//
-//$('#comments').ready(function () {
-//    var url = ''
-//    $getJSON(url, function (comments) {
-//        var html;
-//
-//    })
-//})
+
+$('#comments').ready(function () {
+    var url = 'https://marios-weather-app.herokuapp.com/comments';
+    $.getJSON(url, function (comments) {
+        var html = '';
+        $.each(comments, function (i, item) {
+            html += '<h4><i class=\"fa fa-user\"></i> ' + comments[i].name + '</h4>';
+            html += '<blockquote><p>\"' + comments[i].comment + '\"</p></blockquote>';
+        });
+        $('#comments').html(html);
+    })
+});
