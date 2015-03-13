@@ -53,7 +53,7 @@ $("#city-btn").click(function(e) {
       var location = parsed_json['location']['city'];
       var temp_string = parsed_json['current_observation']['temperature_string'];
       var current_weather = parsed_json['current_observation']['weather'];
-      everything = "<ul>";
+      var everything = "<ul>";
       everything += "<li>Temperature: "+temp_string;
       everything += "<li>Weather: "+current_weather;
       everything += "</ul>";
@@ -61,12 +61,19 @@ $("#city-btn").click(function(e) {
       $("#weather-pnl-body").html(everything);
     }
   });
-
   $("#chosen-city").val(city);
-  e.preventDefault();
-
 });
-
+//$(document).ready(function() {
+    $('#post-btn').click(function () {
+        var obj = { name:$('#name-input').val(), comment:$('#comment').val() };
+        console.log('Posting: ' + obj);
+        //var url = 'https://marios-weather-app.herokuapp.com/comments';
+        var url = 'https://marios-weather-app.herokuapp.com/comments'
+        $.post(url, obj, function(data, status) {
+            console.log(status);
+        });
+    });
+//});
 $('#comments').ready(function () {
     var url = 'https://marios-weather-app.herokuapp.com/comments';
     $.getJSON(url, function (comments) {

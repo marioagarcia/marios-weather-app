@@ -3,9 +3,14 @@ var app = express();
 var cool = require('cool-ascii-faces');
 var pg = require('pg');
 var mongodb = require('mongodb');
+var bp = require('body-parser');
 
 app.set('port', (process.env.PORT || 5000));
 app.use(express.static(__dirname + '/public'));
+app.use(bp.json());
+app.use(bp.urlencoded({
+    extended: true
+}));
 
 app.get('/', function(request, response) {
   var result = '';
@@ -23,12 +28,9 @@ app.get('/comments', function(request, response) {
             comments.find({}).toArray(function (err, all_comments) {
                 if(err) throw err;
                 all_comments.forEach(function (comment) {
-
                     console.log('Got a comment from: ' + comment['name'] + ' saying: ' + comment['comment']);
-                })
-
+                });
                 response.send(all_comments);
-
                 db.close();
             });
         });
@@ -40,13 +42,12 @@ app.post('/comments', function(request, response) {
         if(err) throw err;
         db.collection('comments', function (err, comments) {
             if(err) throw err;
-            comments.insert(response, function (err, result) {
+            comments.insert(request.body, function (err, result) {
                 if(err) throw err;
-                console.log(result);
                 response.send(200);
+                db.close();
             });
         });
-        db.close();
     });
 });
 
