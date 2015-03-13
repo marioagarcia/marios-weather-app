@@ -1,5 +1,6 @@
 body {
   padding-top: 50px;
+    padding-bottom: 50px;
 }
 .first-header {
   padding-top: 40px;
@@ -7,4 +8,8 @@ body {
 
 .float-right {
     float: right;
+}
+
+.hidden {
+    visibility: hidden;
 }
