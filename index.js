@@ -1,21 +1,11 @@
 var express = require('express');
 var app = express();
 var cool = require('cool-ascii-faces');
-var http = require('http');
-var https = require('https');
-var fs = require('fs');
 var pg = require('pg');
 var mongodb = require('mongodb');
 var bp = require('body-parser');
 
-var options = {
-    host: '127.0.0.1',
-    key: fs.readFileSync('ssl/server.key'),
-    cert: fs.readFileSync('ssl/server.crt')
-}
-
 app.set('port', (process.env.PORT || 5000));
-app.set('https-port', (process.env.HTTPS_PORT || 443));
 app.use(express.static(__dirname + '/public'));
 app.use(bp.json());
 app.use(bp.urlencoded({
@@ -92,8 +82,6 @@ app.get('/cities', function(request, response) {
     })
 });
 
-//app.listen(app.get('port'), function() {
-//  console.log("Node app is running at localhost:" + app.get('port'));
-//});
-http.createServer(app).listen(5000);
-https.createServer(options, app).listen(5001);
+app.listen(app.get('port'), function() {
+  console.log("Node app is running at localhost:" + app.get('port'));
+});
