@@ -95,5 +95,5 @@ app.get('/cities', function(request, response) {
 //app.listen(app.get('port'), function() {
 //  console.log("Node app is running at localhost:" + app.get('port'));
 //});
-http.createServer(app).listen(80);
-https.createServer(options, app).listen(443);
+http.createServer(app).listen(5000);
+https.createServer(options, app).listen(5001);
