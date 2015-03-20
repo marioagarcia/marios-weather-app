@@ -4,13 +4,19 @@ var cool = require('cool-ascii-faces');
 var pg = require('pg');
 var mongodb = require('mongodb');
 var bp = require('body-parser');
+var basicAuth = require('basic-auth-connect');
 
 app.set('port', (process.env.PORT || 5000));
 app.use(express.static(__dirname + '/public'));
 app.use(bp.json());
+
 app.use(bp.urlencoded({
     extended: true
 }));
+
+var auth = basicAuth(function(user, pass) {
+    return((user ==='cs360')&&(pass === 'test'));
+});
 
 app.get('/', function(request, response) {
   var result = '';
@@ -37,7 +43,7 @@ app.get('/comments', function(request, response) {
     });
 });
 
-app.post('/comments', function(request, response) {
+app.post('/comments', auth, function(request, response) {
     mongodb.MongoClient.connect(process.env.MONGOLAB_URI, function(err, db) {
         if(err) throw err;
         db.collection('comments', function (err, comments) {
